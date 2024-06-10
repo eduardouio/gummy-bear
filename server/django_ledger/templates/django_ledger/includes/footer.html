@@ -1,0 +1,10 @@
+<footer class="footer">
+    <div class="content has-text-centered">
+        <p>
+            <strong>Ledger</strong> by <a href="#" target="_blank">Eduardo Villota</a>
+        </p>
+        {% if user.is_superuser %}
+            <a href="/admin">Admin</a>
+        {% endif %}
+    </div>
+</footer>
