@@ -5,13 +5,16 @@ Copyright© EDMA Group Inc licensed under the GPLv3 Agreement.
 Contributions to this module:
     * Miguel Sanda <msanda@arrobalytics.com>
 
-A Vendor refers to the person or entity that provides products and services to the business for a fee.
-Vendors are an integral part of the billing process as they are the providers of goods and services for the
-business.
+Un proveedor se refiere a la persona o entidad que proporciona productos y 
+servicios al negocio por una tarifa. Los proveedores son una parte integral 
+del proceso de facturación, ya que son los proveedores de bienes y servicios 
+para el negocio.
 
-Vendors can be flagged as active/inactive or hidden. Vendors who no longer conduct business with the EntityModel,
-whether temporarily or indefinitely may be flagged as inactive (i.e. active is False). Hidden Vendors will not show up
-as an option in the UI, but can still be used programmatically (via API).
+Los proveedores pueden ser marcados como activos/inactivos o ocultos. Los 
+proveedores que ya no hacen negocios con el EntityModel, ya sea temporal o 
+indefinidamente, pueden ser marcados como inactivos (es decir, activo es 
+Falso). Los proveedores ocultos no aparecerán como una opción en la UI, pero 
+todavía pueden ser utilizados programáticamente (a través de la API).
 """
 
 from uuid import uuid4
@@ -21,7 +24,7 @@ from django.db import models, transaction, IntegrityError
 from django.db.models import Q, F, QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from django_ledger.models.mixins import ContactInfoMixIn, CreateUpdateMixIn, BankAccountInfoMixIn, TaxInfoMixIn
+from django_ledger.models.mixins import ContactInfoMixIn, CreateUpdateMixIn, BankAccountInfoMixIn, TaxInfoMixIn, TaxCollectionMixIn
 from django_ledger.models.utils import lazy_loader
 from django_ledger.settings import DJANGO_LEDGER_DOCUMENT_NUMBER_PADDING, DJANGO_LEDGER_VENDOR_NUMBER_PREFIX
 
@@ -136,7 +139,8 @@ class VendorModelManager(models.Manager):
 class VendorModelAbstract(ContactInfoMixIn,
                           BankAccountInfoMixIn,
                           TaxInfoMixIn,
-                          CreateUpdateMixIn):
+                          CreateUpdateMixIn,
+                          TaxCollectionMixIn):
     """
     This is the main abstract class which the VendorModel database will inherit from.
     The VendorModel inherits functionality from the following MixIns:

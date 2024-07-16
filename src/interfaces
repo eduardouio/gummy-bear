@@ -1,0 +1,16 @@
+auto lo
+iface lo inet loopback
+
+iface ens3 inet manual
+
+auto vmbr0
+iface vmbr0 inet static
+        address 192.168.0.199/24
+        gateway 192.168.0.1
+        bridge_ports ens3
+        bridge_stp off
+        bridge_fd 0
+
+iface enp3s4f0 inet manual
+
+iface enp3s4f1 inet manual

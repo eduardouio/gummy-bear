@@ -6,8 +6,10 @@ Contributions to this module:
     * Miguel Sanda <msanda@arrobalytics.com>
     * Pranav P Tulshyan <ptulshyan77@gmail.com>
 
-A Customer refers to the person or entity that buys product and services. When issuing Invoices, a Customer must be
-created before it can be assigned to the InvoiceModel. Only customers who are active can be assigned to new Invoices.
+Un Cliente se refiere a la persona o entidad que compra productos y servicios. 
+Al emitir Facturas, se debe crear un Cliente antes de que pueda ser asignado al 
+Modelo de Factura. Solo los clientes que están activos pueden ser asignados a 
+nuevas Facturas.
 """
 
 from uuid import uuid4
@@ -17,17 +19,24 @@ from django.db import models, transaction, IntegrityError
 from django.db.models import Q, F, QuerySet
 from django.utils.translation import gettext_lazy as _
 
-from django_ledger.models.mixins import ContactInfoMixIn, CreateUpdateMixIn, TaxCollectionMixIn
+from django_ledger.models.mixins import (
+    ContactInfoMixIn,
+    CreateUpdateMixIn,
+    TaxCollectionMixIn,
+    TaxInfoMixIn
+    )
 from django_ledger.models.utils import lazy_loader
 from django_ledger.settings import DJANGO_LEDGER_DOCUMENT_NUMBER_PADDING, DJANGO_LEDGER_CUSTOMER_NUMBER_PREFIX
 
 
 class CustomerModelQueryset(QuerySet):
     """
-    A custom defined QuerySet for the CustomerModel. This implements multiple methods or queries needed to get a
-    filtered QuerySet based on the CustomerModel status. For example, we might want to have list of Customers that
-    are active or hidden. All these separate functions will assist in making such queries and building customized
-    reports.
+    Un QuerySet personalizado para el CustomerModel. Esto implementa múltiples 
+    métodos o consultas necesarias para obtener un QuerySet filtrado basado en el 
+    estado del CustomerModel. Por ejemplo, podríamos querer tener una lista de 
+    Clientes que están activos o ocultos. Todas estas funciones separadas 
+    asistirán en la realización de dichas consultas y la construcción de informes 
+    personalizados.
     """
 
     def active(self) -> QuerySet:
@@ -148,7 +157,10 @@ class CustomerModelManager(models.Manager):
         )
 
 
-class CustomerModelAbstract(ContactInfoMixIn, TaxCollectionMixIn, CreateUpdateMixIn):
+class CustomerModelAbstract(ContactInfoMixIn,
+                            TaxCollectionMixIn,
+                            CreateUpdateMixIn,
+                            TaxInfoMixIn):
     """
     This is the main abstract class which the CustomerModel database will inherit from.
     The CustomerModel inherits functionality from the following MixIns:
